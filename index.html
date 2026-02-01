@@ -37,29 +37,15 @@
             position: fixed;
             inset: 0;
             z-index: 0;
-            /* Update: Menggunakan file lokal. Pastikan file 'background.jpg' ada di folder 'Foto' */
             background-image: linear-gradient(rgba(255, 245, 245, 0.85), rgba(255, 245, 245, 0.7)), 
-                              url('foto/masjid2.jpg');
+                              url('foto/masjid2.jpg'); /* Pastikan path foto benar */
             background-size: cover;
-            background-position: center bottom; /* Fokus ke bagian bawah arsitektur */
+            background-position: center bottom;
             background-attachment: fixed;
             opacity: 0;
             transition: opacity 2s ease;
         }
         .main-bg.visible { opacity: 1; }
-
-        /* Dekorasi Sudut Floral (CSS Only) */
-        .floral-corner {
-            position: fixed;
-            width: 300px;
-            height: 300px;
-            pointer-events: none;
-            z-index: 0;
-            background-size: contain;
-            background-repeat: no-repeat;
-            opacity: 0.15; /* Transparan agar tidak mengganggu teks */
-            mix-blend-mode: multiply;
-        }
         
         .content-overlay { position: relative; z-index: 10; }
         .interactive { pointer-events: auto; }
@@ -73,7 +59,7 @@
         .reveal.visible { opacity: 1; transform: translateY(0); }
 
         .glass-soft { 
-            background: rgba(255, 255, 255, 0.65); /* Sedikit lebih solid agar kontras dengan detail masjid */
+            background: rgba(255, 255, 255, 0.65);
             backdrop-filter: blur(16px); 
             border: 1px solid rgba(255, 255, 255, 0.8); 
             box-shadow: 0 8px 32px 0 rgba(229, 62, 62, 0.05);
@@ -81,19 +67,17 @@
 
         #cover {
             position: fixed; inset: 0; z-index: 100; 
-            /* Background cover dengan nuansa Islami yang lembut */
             background: linear-gradient(135deg, #fff0f0 0%, #ffe4e4 100%), 
                         url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23e53e3e' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
             display: flex; flex-direction: column; align-items: center; justify-content: center;
             transition: transform 1.2s cubic-bezier(0.77, 0, 0.175, 1);
         }
 
-        /* Frame dekoratif di cover */
         .cover-frame {
             position: absolute;
             inset: 20px;
             border: 1px solid rgba(229, 62, 62, 0.2);
-            border-radius: 20px; /* Bentuk kubah sedikit melengkung */
+            border-radius: 20px;
             pointer-events: none;
         }
         .cover-frame::before {
@@ -192,12 +176,7 @@
         }
 
         .map-responsive iframe {
-            left: 0;
-            top: 0;
-            height: 100%;
-            width: 100%;
-            position: absolute;
-            border: 0;
+            left: 0; top: 0; height: 100%; width: 100%; position: absolute; border: 0;
             filter: grayscale(0.2) contrast(1.1); 
         }
 
@@ -217,32 +196,220 @@
             font-size: 14px;
             box-shadow: 0 4px 20px rgba(0,0,0,0.2);
         }
-        #custom-toast.show { visibility: visible; animation: fadein 0.5s, fadeout 0.5s 2.5s; }
-        @keyframes fadein { from {bottom: 0; opacity: 0;} to {bottom: 30px; opacity: 1;} }
-        @keyframes fadeout { from {bottom: 30px; opacity: 1;} to {bottom: 0; opacity: 0;} }
+        #custom-toast.show { visibility: visible; animation: toastfade 3s; }
+        @keyframes toastfade { 
+            0% {bottom: 0; opacity: 0;} 
+            20% {bottom: 30px; opacity: 1;} 
+            80% {bottom: 30px; opacity: 1;}
+            100% {bottom: 0; opacity: 0;} 
+        }
 
         /* Custom Scrollbar for Wishes */
-        .custom-scrollbar::-webkit-scrollbar {
-            width: 6px;
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: rgba(255, 255, 255, 0.3); border-radius: 10px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(229, 62, 62, 0.3); border-radius: 10px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: rgba(229, 62, 62, 0.5); }
+
+        /* Animation for New Wishes - FIX ADDED HERE */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
-        .custom-scrollbar::-webkit-scrollbar-track {
-            background: rgba(255, 255, 255, 0.3);
-            border-radius: 10px;
+        .animate-fade-in {
+            animation: fadeIn 0.6s ease-out forwards;
         }
-        .custom-scrollbar::-webkit-scrollbar-thumb {
-            background: rgba(229, 62, 62, 0.3);
-            border-radius: 10px;
+        
+        .loading-spinner {
+            border: 3px solid rgba(229, 62, 62, 0.1);
+            border-left-color: #e53e3e;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
         }
-        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-            background: rgba(229, 62, 62, 0.5);
-        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     </style>
+    
+    <!-- Firebase Imports -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInWithCustomToken, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, collection, addDoc, onSnapshot, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // Firebase Configuration
+        const firebaseConfig = JSON.parse(__firebase_config);
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+
+        let currentUser = null;
+
+        // Initialize Authentication
+        async function initAuth() {
+            try {
+                if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+                    await signInWithCustomToken(auth, __initial_auth_token);
+                } else {
+                    await signInAnonymously(auth);
+                }
+            } catch (error) {
+                console.error("Auth error:", error);
+                showToast("Gagal terhubung ke server");
+            }
+        }
+
+        // Listen for User State & Data
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                currentUser = user;
+                subscribeToWishes();
+            }
+        });
+
+        // Real-time Listener for Wishes
+        function subscribeToWishes() {
+            const wishesRef = collection(db, 'artifacts', appId, 'public', 'data', 'wishes');
+            const container = document.getElementById('wishes-container');
+            
+            // Show loading initially
+            if (container.children.length === 0) {
+                 container.innerHTML = '<div class="text-center py-4"><div class="loading-spinner"></div><p class="text-xs text-gray-500 mt-2">Memuat ucapan...</p></div>';
+            }
+
+            onSnapshot(wishesRef, (snapshot) => {
+                const wishes = [];
+                snapshot.forEach((doc) => {
+                    wishes.push({ id: doc.id, ...doc.data() });
+                });
+
+                // Sort by timestamp descending (client-side)
+                wishes.sort((a, b) => {
+                    const timeA = a.timestamp?.seconds || 0;
+                    const timeB = b.timestamp?.seconds || 0;
+                    return timeB - timeA;
+                });
+
+                renderWishes(wishes);
+            }, (error) => {
+                console.error("Error fetching wishes:", error);
+                container.innerHTML = '<p class="text-center text-red-400 text-sm">Gagal memuat ucapan.</p>';
+            });
+        }
+
+        function renderWishes(wishes) {
+            const container = document.getElementById('wishes-container');
+            container.innerHTML = ''; // Clear previous
+
+            if (wishes.length === 0) {
+                container.innerHTML = '<div class="text-center text-gray-500 italic py-4 text-sm">Belum ada ucapan. Jadilah yang pertama!</div>';
+                return;
+            }
+
+            wishes.forEach(wish => {
+                // Determine badge color
+                let badgeClass = "bg-gray-100 text-gray-700";
+                if(wish.status === "Hadir" || wish.status === "Akan Hadir") {
+                    badgeClass = "bg-green-100 text-green-700";
+                } else if(wish.status === "Tidak Hadir" || wish.status === "Berhalangan") {
+                    badgeClass = "bg-red-100 text-red-700";
+                }
+
+                // Format timestamp roughly
+                let timeString = "Baru saja";
+                if (wish.timestamp) {
+                    const date = new Date(wish.timestamp.seconds * 1000);
+                    const now = new Date();
+                    const diffMs = now - date;
+                    const diffMins = Math.round(diffMs / 60000);
+                    
+                    if (diffMins < 1) timeString = "Baru saja";
+                    else if (diffMins < 60) timeString = `${diffMins} menit lalu`;
+                    else if (diffMins < 1440) timeString = `${Math.floor(diffMins/60)} jam lalu`;
+                    else timeString = date.toLocaleDateString('id-ID', { day: 'numeric', month: 'short' });
+                }
+
+                const wishEl = document.createElement('div');
+                wishEl.className = "bg-white/70 p-4 rounded-2xl border border-white shadow-sm animate-fade-in mb-4";
+                wishEl.innerHTML = `
+                    <div class="flex justify-between items-start mb-2">
+                        <h4 class="font-bold text-rose-900 text-sm break-words pr-2">${escapeHtml(wish.name)}</h4>
+                        <span class="text-[10px] ${badgeClass} px-2 py-1 rounded-full font-bold whitespace-nowrap">${wish.status}</span>
+                    </div>
+                    <p class="text-gray-700 text-sm italic break-words">"${escapeHtml(wish.message)}"</p>
+                    <p class="text-[10px] text-gray-400 mt-2 text-right">${timeString}</p>
+                `;
+                container.appendChild(wishEl);
+            });
+        }
+
+        // Helper to prevent XSS
+        function escapeHtml(text) {
+            if (!text) return "";
+            return text
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }
+
+        // Expose function to window for the form onsubmit
+        window.handleRSVP = async function(event) {
+            event.preventDefault();
+            
+            if (!currentUser) {
+                showToast("Menghubungkan ke server...");
+                return;
+            }
+
+            const name = document.getElementById('rsvpName').value;
+            const guests = document.getElementById('rsvpGuest').value;
+            const status = document.getElementById('rsvpStatus').value;
+            const message = document.getElementById('rsvpMessage').value || "Semoga lancar dan bahagia selalu!";
+            
+            const btn = event.target.querySelector('button');
+            const originalText = btn.innerText;
+            btn.innerText = "MENYIMPAN...";
+            btn.disabled = true;
+
+            try {
+                // Save to Firestore
+                await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'wishes'), {
+                    name: name,
+                    guests: guests,
+                    status: status,
+                    message: message,
+                    timestamp: serverTimestamp(),
+                    userId: currentUser.uid // Track who posted (optional)
+                });
+                
+                showToast(`Terima kasih ${name}, data Anda tersimpan!`);
+                event.target.reset();
+                
+                // Scroll to top of wishes container
+                const container = document.getElementById('wishes-container');
+                container.scrollTop = 0;
+
+            } catch (error) {
+                console.error("Error saving RSVP:", error);
+                showToast("Gagal mengirim data. Coba lagi.");
+            } finally {
+                btn.innerText = originalText;
+                btn.disabled = false;
+            }
+        };
+
+        // Initialize
+        initAuth();
+    </script>
 </head>
 <body>
 
     <div id="custom-toast">Pesan berhasil dikirim!</div>
 
-    <!-- Background Layer (Updated Image) -->
+    <!-- Background Layer -->
     <div id="main-bg-layer" class="main-bg"></div>
 
     <div id="cover">
@@ -445,33 +612,10 @@
             <div class="glass-soft p-8 rounded-[40px] reveal interactive">
                 <h3 class="font-serif text-2xl text-rose-900 mb-6 text-center font-bold">Ucapan & Doa</h3>
                 <div id="wishes-container" class="space-y-4 max-h-[400px] overflow-y-auto custom-scrollbar px-2">
-                    <!-- Dummy Data 1 -->
-                    <div class="bg-white/70 p-4 rounded-2xl border border-white shadow-sm">
-                        <div class="flex justify-between items-start mb-2">
-                            <h4 class="font-bold text-rose-900 text-sm">Dimas & Rina</h4>
-                            <span class="text-[10px] bg-green-100 text-green-700 px-2 py-1 rounded-full font-bold">Hadir</span>
-                        </div>
-                        <p class="text-gray-700 text-sm italic">"Selamat ya Aep & Meida! Semoga menjadi keluarga sakinah mawaddah warahmah."</p>
-                        <p class="text-[10px] text-gray-400 mt-2 text-right">Baru saja</p>
-                    </div>
-                    
-                    <!-- Dummy Data 2 -->
-                    <div class="bg-white/70 p-4 rounded-2xl border border-white shadow-sm">
-                        <div class="flex justify-between items-start mb-2">
-                            <h4 class="font-bold text-rose-900 text-sm">Pak Budi Santoso</h4>
-                            <span class="text-[10px] bg-red-100 text-red-700 px-2 py-1 rounded-full font-bold">Tidak Hadir</span>
-                        </div>
-                        <p class="text-gray-700 text-sm italic">"Mohon maaf belum bisa hadir karena ada dinas luar kota. Doa terbaik untuk kalian berdua."</p>
-                        <p class="text-[10px] text-gray-400 mt-2 text-right">1 jam yang lalu</p>
-                    </div>
-                     <!-- Dummy Data 3 -->
-                     <div class="bg-white/70 p-4 rounded-2xl border border-white shadow-sm">
-                        <div class="flex justify-between items-start mb-2">
-                            <h4 class="font-bold text-rose-900 text-sm">Siti Nurhaliza</h4>
-                            <span class="text-[10px] bg-green-100 text-green-700 px-2 py-1 rounded-full font-bold">Hadir</span>
-                        </div>
-                        <p class="text-gray-700 text-sm italic">"Happy Wedding Meida cantikk! Lancar sampai hari H yaaa 🥰"</p>
-                        <p class="text-[10px] text-gray-400 mt-2 text-right">2 jam yang lalu</p>
+                    <!-- Data will be loaded here from Firebase -->
+                    <div class="text-center py-4">
+                        <div class="loading-spinner"></div>
+                        <p class="text-xs text-gray-500 mt-2">Memuat ucapan...</p>
                     </div>
                 </div>
             </div>
@@ -484,6 +628,7 @@
     </div>
 
     <script>
+        // Animasi Bunga
         let scene, camera, renderer, petals = [];
         const petalCount = 150;
 
@@ -524,59 +669,11 @@
             document.execCommand("copy");
             document.body.removeChild(dummy);
             
-            // Custom message if copying address
             if(id === 'alamat-kado') {
                 showToast("Alamat berhasil disalin!");
             } else {
                 showToast("Nomor rekening berhasil disalin!");
             }
-        }
-
-        // Updated RSVP Handler
-        function handleRSVP(event) {
-            event.preventDefault();
-            const name = document.getElementById('rsvpName').value;
-            const status = document.getElementById('rsvpStatus').value;
-            const message = document.getElementById('rsvpMessage').value || "Semoga lancar dan bahagia selalu!";
-            
-            const btn = event.target.querySelector('button');
-            const originalText = btn.innerText;
-            btn.innerText = "MENGIRIM...";
-            btn.disabled = true;
-
-            // Simulate sending data
-            setTimeout(() => {
-                // Add to wishes list
-                addWishToDisplay(name, status, message);
-                
-                showToast(`Terima kasih ${name}, konfirmasi Anda telah kami terima!`);
-                btn.innerText = originalText;
-                btn.disabled = false;
-                event.target.reset();
-            }, 1000);
-        }
-
-        function addWishToDisplay(name, status, message) {
-            const container = document.getElementById('wishes-container');
-            
-            // Determine badge color
-            let badgeClass = "bg-gray-100 text-gray-700";
-            if(status === "Hadir") badgeClass = "bg-green-100 text-green-700";
-            if(status === "Tidak Hadir") badgeClass = "bg-red-100 text-red-700";
-            
-            const newWish = document.createElement('div');
-            newWish.className = "bg-white/70 p-4 rounded-2xl border border-white shadow-sm animate-fade-in";
-            newWish.innerHTML = `
-                <div class="flex justify-between items-start mb-2">
-                    <h4 class="font-bold text-rose-900 text-sm">${name}</h4>
-                    <span class="text-[10px] ${badgeClass} px-2 py-1 rounded-full font-bold">${status}</span>
-                </div>
-                <p class="text-gray-700 text-sm italic">"${message}"</p>
-                <p class="text-[10px] text-gray-400 mt-2 text-right">Baru saja</p>
-            `;
-            
-            // Add to top
-            container.insertBefore(newWish, container.firstChild);
         }
 
         let isPlaying = true;
